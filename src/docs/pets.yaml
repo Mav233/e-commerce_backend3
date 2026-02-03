@@ -1,0 +1,100 @@
+components:
+  schemas:
+    Pet:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        species:
+          type: string
+        age:
+          type: number
+        adopted:
+          type: boolean
+      example:
+        _id: "64b0c1e5a1b2c3"
+        name: Firulais
+        species: dog
+        age: 3
+        adopted: false
+
+    PetInput:
+      type: object
+      required:
+        - name
+        - species
+        - age
+      properties:
+        name:
+          type: string
+        species:
+          type: string
+        age:
+          type: number
+      example:
+        name: Firulais
+        species: dog
+        age: 3
+
+paths:
+  /api/pets:
+    get:
+      summary: Obtener todas las mascotas
+      tags:
+        - Pets
+      responses:
+        "200":
+          description: Lista de mascotas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Pet"
+
+    post:
+      summary: Crear una nueva mascota
+      tags:
+        - Pets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PetInput"
+      responses:
+        "201":
+          description: Mascota creada correctamente
+
+  /api/pets/{pid}:
+    get:
+      summary: Obtener una mascota por ID
+      tags:
+        - Pets
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Mascota encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    $ref: "#/components/schemas/Pet"
+        "404":
+          description: Mascota no encontrada

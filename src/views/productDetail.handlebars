@@ -1,0 +1,43 @@
+<div class="product-detail">
+
+    {{#if product.thumbnails.length}}
+    <img src="{{product.thumbnails.[0]}}" class="product-img">
+    {{/if}}
+
+    <h1>{{product.title}}</h1>
+    <p>{{product.description}}</p>
+    <p class="price">$ {{product.price}}</p>
+
+    <!-- AGREGAR AL CARRITO -->
+    <form action="/api/carts/{{cartId}}/product/{{product._id}}" method="POST">
+
+        <button type="submit" class="btn-primary">
+            🛒 Agregar al carrito
+        </button>
+    </form>
+
+</div>
+
+<br>
+
+<a href="/products" class="btn-primary">
+    ← Volver al listado de productos
+</a>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get("added")) {
+        setTimeout(() => {
+            if (params.get("added") === "success") {
+                showToast("Producto agregado al carrito 🛒", true);
+            }
+
+            if (params.get("added") === "error") {
+                showToast("No se pudo agregar el producto", false);
+            }
+        }, 100);
+    }
+</script>
+
+</div>

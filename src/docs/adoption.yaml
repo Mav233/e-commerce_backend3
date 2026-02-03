@@ -1,0 +1,128 @@
+components:
+  schemas:
+    Adoption:
+      type: object
+      properties:
+        _id:
+          type: string
+        pet:
+          type: string
+          description: ID de la mascota
+        owner:
+          type: string
+          description: ID del usuario
+        status:
+          type: string
+          description: Estado de la adopción
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      example:
+        _id: "64c1d2e3f4"
+        pet: "64b0c1e5a1b2c3"
+        owner: "64a9c1e5f1c2a1"
+        status: "pending"
+        createdAt: "2024-01-01T12:00:00Z"
+        updatedAt: "2024-01-01T12:00:00Z"
+
+paths:
+  /api/adoptions:
+    get:
+      summary: Obtener todas las adopciones
+      tags:
+        - Adoptions
+      responses:
+        "200":
+          description: Lista de adopciones
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Adoption"
+
+    post:
+      summary: Crear una adopción
+      tags:
+        - Adoptions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - pet
+                - owner
+              properties:
+                pet:
+                  type: string
+                owner:
+                  type: string
+      responses:
+        "201":
+          description: Adopción creada correctamente
+        "400":
+          description: Datos inválidos
+
+  /api/adoptions/{aid}:
+    get:
+      summary: Obtener adopción por ID
+      tags:
+        - Adoptions
+      parameters:
+        - name: aid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Adopción encontrada
+        "404":
+          description: Adopción no encontrada
+
+    put:
+      summary: Actualizar adopción
+      tags:
+        - Adoptions
+      parameters:
+        - name: aid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Adopción actualizada
+        "404":
+          description: Adopción no encontrada
+
+    delete:
+      summary: Eliminar adopción
+      tags:
+        - Adoptions
+      parameters:
+        - name: aid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Adopción eliminada
+        "404":
+          description: Adopción no encontrada
